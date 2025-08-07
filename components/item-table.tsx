@@ -32,35 +32,23 @@ const ItemNameCell = (props: { item: Item }) => {
 
 const ItemsPerWorkerCell = (props: { item: Item }) => {
 	const itemsPerWorker = calculateItemsPerWorker(props.item);
-	return (
-		<div className='py-2'>
-			{itemsPerWorker.toFixed(2)}
-		</div>
-	);
-}
+	return <div className='py-2'>{itemsPerWorker.toFixed(2)}</div>;
+};
 
 const NeedsPerWorkerCell = (props: { item: Item }) => {
 	const needsPerWorker = calculateNeedsPerWorker(props.item);
 
 	return (
 		<div className='py-2'>
-			{needsPerWorker > 0
-				? `${needsPerWorker.toFixed(2)}`
-				: '-'}
+			{needsPerWorker > 0 ? `${needsPerWorker.toFixed(2)}` : '-'}
 		</div>
 	);
-}
+};
 
 const ItemNeedTypeCell = (props: { item: Item }) => {
-	const needType = props.item.needType
-	return (
-		<div className='py-2'>
-			{needType != "None"
-				? needType
-				: '-'}
-		</div>
-	);
-}
+	const needType = props.item.needType;
+	return <div className='py-2'>{needType != 'None' ? needType : '-'}</div>;
+};
 
 // Table component to display items, items per worker, and needs per worker
 export function ItemTable() {
@@ -74,10 +62,18 @@ export function ItemTable() {
 					<table className='min-w-full divide-y divide-border'>
 						<thead>
 							<tr>
-								<th className='px-4 py-2 text-left'>Item Name</th>
-								<th className='px-4 py-2 text-left'>Items/Worker</th>
-								<th className='px-4 py-2 text-left'>Needs/Worker</th>
-								<th className='px-4 py-2 text-left'>Need Type</th>
+								<th className='px-4 py-2 text-left'>
+									Item Name
+								</th>
+								<th className='px-4 py-2 text-left'>
+									Items/Worker
+								</th>
+								<th className='px-4 py-2 text-left'>
+									Needs/Worker
+								</th>
+								<th className='px-4 py-2 text-left'>
+									Need Type
+								</th>
 							</tr>
 						</thead>
 						<tbody>

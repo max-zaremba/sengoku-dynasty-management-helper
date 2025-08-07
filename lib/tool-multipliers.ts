@@ -1,26 +1,16 @@
-export type ToolType =
-	| 'None'
-	| 'Axe'
-	| 'Pickaxe'
-	| 'Knife'
-	| 'Adze'
-	| 'StirringTool'
-	| 'FishingNet'
-	| 'SeedBag'
-	| 'Hammer'
-	| 'MeleeWeapon'
-	| 'RangedWeapon';
+import { TOOL_TYPES, ToolType } from "./types/tool-types";
 
-export const toolMultipliers: Record<ToolType, number> = {
-	None: 1,
-	Axe: 1.75,
-	Pickaxe: 1.75,
-	Knife: 1.75,
-	Adze: 1.75,
-	StirringTool: 1,
-	FishingNet: 1,
-	SeedBag: 1,
-	Hammer: 1.75,
-	MeleeWeapon: 2.5,
-	RangedWeapon: 2.5,
+export const TOOL_MULTIPLIERS: Record<ToolType, number> = {
+	[TOOL_TYPES.NONE]: 1,
+	[TOOL_TYPES.AXE]: 1.75,
+	[TOOL_TYPES.PICKAXE]: 1.75,
+	[TOOL_TYPES.KNIFE]: 1.75,
+	[TOOL_TYPES.ADZE]: 1.75,
+	[TOOL_TYPES.STIRRING_TOOL]: 1,
+	[TOOL_TYPES.FISHING_NET]: 1,
+	[TOOL_TYPES.SEED_BAG]: 1,
+	[TOOL_TYPES.HAMMER]: 1.75,
+	[TOOL_TYPES.MELEE_WEAPON]: 2.5,
+	[TOOL_TYPES.RANGED_WEAPON]: 2.5,
 };
+

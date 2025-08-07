@@ -1,6 +1,10 @@
 import { ALL_ITEMS } from './item-store';
-import { toolMultipliers } from './tool-multipliers';
+import { TOOL_MULTIPLIERS } from './tool-multipliers';
 import { Item } from './types/item-types';
+
+function calculateTrueMaxAmt(item: Item): number {
+	return (item.productionLimit * item.baseAmtProduced * TOOL_MULTIPLIERS[item.toolType || 'None']);
+}
 
 export function calculateWorkerCost(item: Item): number {
 	// Base worker cost is always 1
@@ -20,7 +24,7 @@ export function calculateWorkerCost(item: Item): number {
 		if (!ingredientItem) continue;
 
 		// Calculate how many of this ingredient we need for max production
-		const totalIngredientNeeded = ingredient.quantity * item.maxProduction;
+		const totalIngredientNeeded = ingredient.quantity * item.productionLimit;
 
 		// Calculate worker cost for this ingredient (recursive)
 		const ingredientItemsPerWorker =
@@ -37,7 +41,7 @@ export function calculateWorkerCost(item: Item): number {
 }
 
 export function calculateItemsPerWorker(item: Item): number {
-	return item.maxProduction / calculateWorkerCost(item);
+	return calculateTrueMaxAmt(item) / calculateWorkerCost(item);
 }
 
 export function calculateNeedsPerWorker(item: Item): number {
@@ -47,7 +51,6 @@ export function calculateNeedsPerWorker(item: Item): number {
 
 	return (
 		item.needValue *
-		calculateItemsPerWorker(item) *
-		toolMultipliers[item.toolType || 'None']
+		calculateItemsPerWorker(item)
 	);
 }
