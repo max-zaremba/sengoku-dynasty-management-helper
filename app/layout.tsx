@@ -26,6 +26,13 @@ export default function RootLayout({
 		<html lang='en'>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				style={{
+					backgroundImage: "url('/sengoku-village-background.jpg')",
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat',
+					backgroundAttachment: 'fixed',
+					backgroundPosition: 'center',
+				}}
 			>
 				{children}
 			</body>
