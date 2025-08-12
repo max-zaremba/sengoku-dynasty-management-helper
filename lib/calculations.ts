@@ -2,11 +2,11 @@ import { ALL_ITEMS } from './item-store';
 import { TOOL_MULTIPLIERS } from './tool-multipliers';
 import { Item } from './types/item-types';
 
-function calculateTrueMaxAmt(item: Item): number {
+const calculateTrueMaxAmt = (item: Item): number => {
 	return (item.productionLimit * item.baseAmtProduced * TOOL_MULTIPLIERS[item.toolType || 'None']);
-}
+};
 
-export function calculateWorkerCost(item: Item): number {
+export const calculateWorkerCost = (item: Item): number => {
 	// Base worker cost is always 1
 	let totalWorkerCost = 1;
 
@@ -38,13 +38,13 @@ export function calculateWorkerCost(item: Item): number {
 	}
 
 	return totalWorkerCost;
-}
+};
 
-export function calculateItemsPerWorker(item: Item): number {
+export const calculateItemsPerWorker = (item: Item): number => {
 	return calculateTrueMaxAmt(item) / calculateWorkerCost(item);
-}
+};
 
-export function calculateNeedsPerWorker(item: Item): number {
+export const calculateNeedsPerWorker = (item: Item): number => {
 	if (!item.needType || !item.needValue || item.needValue === 0) {
 		return 0;
 	}
@@ -53,4 +53,4 @@ export function calculateNeedsPerWorker(item: Item): number {
 		item.needValue *
 		calculateItemsPerWorker(item)
 	);
-}
+};
