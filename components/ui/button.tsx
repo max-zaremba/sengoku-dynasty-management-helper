@@ -34,18 +34,14 @@ const buttonVariants = cva(
 	},
 );
 
-function Button({
+const Button: React.FC<React.ComponentProps<'button'> & VariantProps<typeof buttonVariants> & { asChild?: boolean }> = ({
 	className,
 	variant,
 	size,
 	asChild = false,
 	...props
-}: React.ComponentProps<'button'> &
-	VariantProps<typeof buttonVariants> & {
-		asChild?: boolean;
-	}) {
+}) => {
 	const Comp = asChild ? Slot : 'button';
-
 	return (
 		<Comp
 			data-slot='button'
@@ -53,6 +49,6 @@ function Button({
 			{...props}
 		/>
 	);
-}
+};
 
 export { Button, buttonVariants };

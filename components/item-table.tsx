@@ -90,7 +90,7 @@ const applySort = (items: Item[], sortField: TableHeader | undefined, sortDirect
 	})
 };
 // Table component to display items, items per worker, and needs per worker
-export function ItemTable() {
+export const ItemTable = () => {
 	const [sortField, setSortField] = useState<TableHeader | undefined>(TABLE_HEADERS.NEEDS_PER_WORKER);
 	const [sortDirection, setSortDirection] = useState<SortDirection>(SORT_DIRECTION.DESCENDING);
 
