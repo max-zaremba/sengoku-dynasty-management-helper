@@ -1,14 +1,11 @@
-import { ToolType } from "./tool-types";
-
-
-type seasonalAvailability = {
+export type SeasonalAvailability = {
 	spring: boolean;
 	summer: boolean;
 	autumn: boolean;
 	winter: boolean;
 };
 
-type ItemPrice = {
+export type ItemPrice = {
 	buyPrice: number;
 	sellPrice: number;
 };
@@ -24,7 +21,7 @@ export const NEED_TYPES = {
 	NONE: 'None',
 } as const;
 
-export type NeedType = typeof NEED_TYPES[keyof typeof NEED_TYPES];
+export type NeedType = (typeof NEED_TYPES)[keyof typeof NEED_TYPES];
 
 // TODO: Complete
 export const ITEM_CLASSIFICATIONS = {
@@ -38,23 +35,13 @@ export const ITEM_CLASSIFICATIONS = {
 	FISH: 'Fish',
 	CEREAL: 'Cereal',
 	RESOURCE: 'Resource',
+	INTERMEDIATE_RESOURCE: 'Intermediate Resource',
+	CONSUMABLE: 'Consumable',
 } as const;
 
-export type ItemClassification = typeof ITEM_CLASSIFICATIONS[keyof typeof ITEM_CLASSIFICATIONS];
+export type ItemClassification =
+	(typeof ITEM_CLASSIFICATIONS)[keyof typeof ITEM_CLASSIFICATIONS];
 
 export type Ingredient =
 	| { name: string; quantity: number }
 	| { classification: string; quantity: number };
-
-export type Item = {
-	name: string;
-	productionLimit: number;
-	baseAmtProduced: number;
-	ingredients: Ingredient[];
-	needType: NeedType;
-	needValue: number;
-	toolType: ToolType;
-	classification?: ItemClassification;
-	itemPrice: ItemPrice;
-	seasonalAvailability: seasonalAvailability;
-};

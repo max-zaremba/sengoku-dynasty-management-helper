@@ -2,7 +2,11 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-const Input: React.FC<React.ComponentProps<'input'>> = ({ className, type, ...props }) => (
+const Input: React.FC<React.ComponentProps<'input'>> = ({
+	className,
+	type,
+	...props
+}) => (
 	<input
 		type={type}
 		data-slot='input'

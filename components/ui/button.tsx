@@ -34,13 +34,10 @@ const buttonVariants = cva(
 	},
 );
 
-const Button: React.FC<React.ComponentProps<'button'> & VariantProps<typeof buttonVariants> & { asChild?: boolean }> = ({
-	className,
-	variant,
-	size,
-	asChild = false,
-	...props
-}) => {
+const Button: React.FC<
+	React.ComponentProps<'button'> &
+		VariantProps<typeof buttonVariants> & { asChild?: boolean }
+> = ({ className, variant, size, asChild = false, ...props }) => {
 	const Comp = asChild ? Slot : 'button';
 	return (
 		<Comp
