@@ -6,6 +6,6 @@ const SengokuDynastyManager = () => {
 			<ItemTable />
 		</div>
 	);
-}
+};
 
 export default SengokuDynastyManager;

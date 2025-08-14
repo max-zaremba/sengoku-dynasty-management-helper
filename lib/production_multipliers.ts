@@ -1,8 +1,28 @@
-import { TOOL_TYPES, ToolType } from "./types/tool-types";
+import { TOOL_TYPES, ToolType } from './types/tool-types';
 
-export const TOOL_MULTIPLIERS: Record<ToolType, number> = {
+export type Perk = Record<number, number>; // level to multipleier
+export const PERK_MULTIPLIERS: Record<string, Perk> = {
+	WORKER_PRODUCTIVITY_TRAINING: {
+		0: 1,
+		1: 1.05,
+		2: 1.1,
+		3: 1.15,
+	},
+};
+
+const currentPerkLevels = 3; // this will be dynamic based on player perk level
+
+const calculatePerkMultiplier = (): number => {
+	return Object.values(PERK_MULTIPLIERS).reduce(
+		(acc: number, perk: Perk) => acc * perk[currentPerkLevels],
+		1,
+	);
+};
+
+export const currentPerkMultiplier = calculatePerkMultiplier();
+export const currentToolMultipliers: Record<ToolType, number> = {
 	[TOOL_TYPES.NONE]: 1,
-	[TOOL_TYPES.AXE]: 1.74,
+	[TOOL_TYPES.AXE]: 1.75,
 	[TOOL_TYPES.PICKAXE]: 1.75,
 	[TOOL_TYPES.KNIFE]: 1.75,
 	[TOOL_TYPES.ADZE]: 1.75,
@@ -14,13 +34,3 @@ export const TOOL_MULTIPLIERS: Record<ToolType, number> = {
 	[TOOL_TYPES.MELEE_WEAPON]: 2.5,
 	[TOOL_TYPES.RANGED_WEAPON]: 2.5,
 };
-
-export type Perk = Record<number, number>;  // level to multipleier
-export const PERK_MULTIPLIERS: Record<string, Perk> = {
-	WORKER_PRODUCTIVITY_TRAINING: {
-		0: 1,
-		1: 1.05,
-		2: 1.1,
-		3: 1.15
-	}
-}

@@ -1,4 +1,5 @@
-import { Item, ITEM_CLASSIFICATIONS, NEED_TYPES } from './types/item-types';
+import { Item } from './item';
+import { ITEM_CLASSIFICATIONS, NEED_TYPES } from './types/item-types';
 import { TOOL_TYPES } from './types/tool-types';
 
 const DEFAULT_SEASONAL_AVAILABILITY = {
@@ -8,10 +9,10 @@ const DEFAULT_SEASONAL_AVAILABILITY = {
 	winter: true,
 };
 
-const MEALS_ITEMS: (Item & { needType: typeof NEED_TYPES.MEALS })[] = [
-	{
+const MEALS_ITEMS: Item[] = [
+	new Item({
 		name: 'Rice',
-		productionLimit: 20,
+		unitsOfProduction: 20,
 		baseAmtProduced: 16,
 		ingredients: [],
 		needType: NEED_TYPES.MEALS,
@@ -28,10 +29,10 @@ const MEALS_ITEMS: (Item & { needType: typeof NEED_TYPES.MEALS })[] = [
 			autumn: true,
 			winter: false,
 		},
-	},
-	{
+	}),
+	new Item({
 		name: 'Lotus Root',
-		productionLimit: 20,
+		unitsOfProduction: 20,
 		baseAmtProduced: 1,
 		ingredients: [],
 		needType: NEED_TYPES.MEALS,
@@ -48,12 +49,16 @@ const MEALS_ITEMS: (Item & { needType: typeof NEED_TYPES.MEALS })[] = [
 			autumn: false,
 			winter: false,
 		},
-	},
-	{
+	}),
+	new Item({
 		name: 'Cooked Rice (Barrel)',
-		productionLimit: 50,
+		unitsOfProduction: 50,
 		baseAmtProduced: 1,
-		ingredients: [{ name: 'Rice', quantity: 8 }, { name: 'Water', quantity: 1 }, { name: 'Firewood', quantity: 1 }],
+		ingredients: [
+			{ name: 'Rice', quantity: 8 },
+			{ name: 'Water', quantity: 1 },
+			{ name: 'Firewood', quantity: 1 },
+		],
 		needType: NEED_TYPES.MEALS,
 		needValue: 24,
 		toolType: TOOL_TYPES.STIRRING_TOOL,
@@ -63,13 +68,46 @@ const MEALS_ITEMS: (Item & { needType: typeof NEED_TYPES.MEALS })[] = [
 			sellPrice: 15,
 		},
 		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
-	}
+	}),
+	new Item({
+		name: 'Raw Fish',
+		unitsOfProduction: 66,
+		baseAmtProduced: 1,
+		ingredients: [],
+		needType: NEED_TYPES.MEALS,
+		needValue: 4,
+		toolType: TOOL_TYPES.FISHING_NET,
+		classification: ITEM_CLASSIFICATIONS.CONSUMABLE,
+		itemPrice: {
+			buyPrice: 20,
+			sellPrice: 10,
+		},
+		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
+	}),
+	new Item({
+		name: 'Narezushi',
+		unitsOfProduction: 57,
+		baseAmtProduced: 1,
+		ingredients: [
+			{ name: 'Cooked Rice (Barrel)', quantity: 1 },
+			{ name: 'Raw Fish', quantity: 1 },
+		],
+		needType: NEED_TYPES.MEALS,
+		needValue: 54,
+		toolType: TOOL_TYPES.NONE,
+		classification: ITEM_CLASSIFICATIONS.CONSUMABLE,
+		itemPrice: {
+			buyPrice: 110,
+			sellPrice: 55,
+		},
+		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
+	}),
 ];
 
-const BEVERAGES_ITEMS: (Item & { needType: typeof NEED_TYPES.BEVERAGES })[] = [
-	{
+const BEVERAGES_ITEMS: Item[] = [
+	new Item({
 		name: 'Water',
-		productionLimit: 150,
+		unitsOfProduction: 150,
 		baseAmtProduced: 1,
 		ingredients: [],
 		needType: NEED_TYPES.BEVERAGES,
@@ -81,13 +119,13 @@ const BEVERAGES_ITEMS: (Item & { needType: typeof NEED_TYPES.BEVERAGES })[] = [
 			sellPrice: 0.04,
 		},
 		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
-	}
+	}),
 ];
 
-const HEATING_ITEMS: (Item & { needType: typeof NEED_TYPES.HEATING })[] = [
-	{
+const HEATING_ITEMS: Item[] = [
+	new Item({
 		name: 'Firewood',
-		productionLimit: 33,
+		unitsOfProduction: 33,
 		baseAmtProduced: 8,
 		ingredients: [{ name: 'Log (Conifer/Deciduous)', quantity: 1 }],
 		needType: NEED_TYPES.HEATING,
@@ -99,13 +137,13 @@ const HEATING_ITEMS: (Item & { needType: typeof NEED_TYPES.HEATING })[] = [
 			sellPrice: 0.25,
 		},
 		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
-	}
+	}),
 ];
 
-const RESOURCES_ITEMS: (Item & { needType: typeof NEED_TYPES.NONE })[] = [
-	{
+const RESOURCES_ITEMS: Item[] = [
+	new Item({
 		name: 'Log (Conifer/Deciduous)',
-		productionLimit: 33,
+		unitsOfProduction: 33,
 		baseAmtProduced: 1,
 		ingredients: [],
 		needType: NEED_TYPES.NONE,
@@ -113,11 +151,16 @@ const RESOURCES_ITEMS: (Item & { needType: typeof NEED_TYPES.NONE })[] = [
 		toolType: TOOL_TYPES.AXE,
 		classification: ITEM_CLASSIFICATIONS.RESOURCE,
 		itemPrice: {
-			buyPrice: 5.20,
-			sellPrice: 1.30,
+			buyPrice: 5.2,
+			sellPrice: 1.3,
 		},
 		seasonalAvailability: DEFAULT_SEASONAL_AVAILABILITY,
-	}
+	}),
 ];
 
-export const ALL_ITEMS: Item[] = [...MEALS_ITEMS, ...BEVERAGES_ITEMS, ...HEATING_ITEMS, ...RESOURCES_ITEMS];
+export const ALL_ITEMS: Item[] = [
+	...MEALS_ITEMS,
+	...BEVERAGES_ITEMS,
+	...HEATING_ITEMS,
+	...RESOURCES_ITEMS,
+];

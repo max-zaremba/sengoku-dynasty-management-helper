@@ -1,33 +1,30 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import {
-	calculateItemsPerWorker,
-	calculateNeedsPerWorker,
-	calculatePerkMultiplier,
-	calculateTrueMaxAmt,
-	calculateWorkerCost,
-} from '@/lib/calculations';
 import { ALL_ITEMS } from '@/lib/item-store';
-import { Ingredient, Item } from '@/lib/types/item-types';
-import ItemTableHeaderRow, { TableHeader, SortDirection, TABLE_HEADERS, SORT_DIRECTION } from './item-table-header-row';
+import { Ingredient } from '@/lib/types/item-types';
+import ItemTableHeaderRow, {
+	TableHeader,
+	SortDirection,
+	TABLE_HEADERS,
+	SORT_DIRECTION,
+} from './item-table-header-row';
 import { exhaustiveSwitch } from '@/lib/utils';
+import { Item } from '@/lib/item';
 
 const ItemNameCell = (props: { item: Item }) => {
-	const name = props.item.name;
-	const ingredients = props.item.ingredients;
 	return (
 		<div>
-			<div className='font-medium'>{name}</div>
-			{ingredients.length > 0 && (
+			<div className='font-medium'>{props.item.name}</div>
+			{props.item.ingredients.length > 0 && (
 				<div className='text-sm text-muted-foreground'>
 					Requires:{' '}
-					{ingredients
+					{props.item.ingredients
 						.map((ingredient: Ingredient) => {
 							if ('classification' in ingredient) {
-								return `${ingredient.quantity} x Any ${ingredient.classification}`;
+								return `${ingredient.quantity}x Any ${ingredient.classification}`;
 							}
-							return `${ingredient.quantity} x ${ingredient.name}`;
+							return `${ingredient.quantity}x ${ingredient.name}`;
 						})
 						.join(', ')}
 				</div>
@@ -36,26 +33,14 @@ const ItemNameCell = (props: { item: Item }) => {
 	);
 };
 
-const MaxProductionCell = (props: { item: Item }) => {
-	const maxProd = calculateTrueMaxAmt(props.item, calculatePerkMultiplier());
-	return <div className='py-2'>{maxProd.toFixed(2)}</div>;
-};
-
-const TotalWorkerCostCell = (props: { item: Item }) => {
-	const workerCost = calculateWorkerCost(props.item);
-	return <div className='py-2'>{workerCost.toFixed(2)}</div>;
-};
-
-const ItemsPerWorkerCell = (props: { item: Item }) => {
-	const itemsPerWorker = calculateItemsPerWorker(props.item);
-	return <div className='py-2'>{itemsPerWorker.toFixed(2)}</div>;
-};
-
-const NeedsPerWorkerCell = (props: { item: Item }) => {
-	const needsPerWorker = calculateNeedsPerWorker(props.item);
+const ItemNeedsPerWorkerCell = (props: { item: Item }) => {
+	const needsPerWorker = props.item.needsPerWorker;
 	return (
-		<div className='py-2'>
-			{needsPerWorker > 0 ? `${needsPerWorker.toFixed(2)}` : '-'}
+		<div>
+			<div className='py-2'>
+				{needsPerWorker > 0 ? `${needsPerWorker.toFixed(2)}` : '-'}
+			</div>
+			<div className='text-sm text-muted-foreground'></div>
 		</div>
 	);
 };
@@ -65,62 +50,96 @@ const ItemNeedTypeCell = (props: { item: Item }) => {
 	return <div className='py-2'>{needType != 'None' ? needType : '-'}</div>;
 };
 
-const applySort = (items: Item[], sortField: TableHeader | undefined, sortDirection: SortDirection) => {
+const appliedComparison = (
+	a: string | number,
+	b: string | number,
+	sortDirection: SortDirection,
+): number => {
+	if (typeof a === 'string' && typeof b === 'string') {
+		return sortDirection === SORT_DIRECTION.ASCENDING
+			? a.localeCompare(b)
+			: b.localeCompare(a);
+	}
+	return sortDirection === SORT_DIRECTION.ASCENDING
+		? (a as number) - (b as number)
+		: (b as number) - (a as number);
+};
+
+const customNeedSortVal = (item: Item): number => {
+	switch (item.needType) {
+		case 'Meals':
+			return 1;
+		case 'Heating':
+			return 2;
+		case 'Beverages':
+			return 3;
+		case 'Maintenance':
+			return 4;
+		case 'Health':
+			return 5;
+		case 'Security':
+			return 6;
+		case 'Spiritual':
+			return 7;
+		case 'Luxury':
+			return 8;
+		default:
+			return 9; // None or any other type
+	}
+};
+
+const applySort = (
+	items: Item[],
+	sortField: TableHeader | undefined,
+	sortDirection: SortDirection,
+) => {
 	if (!sortField || !sortDirection) {
 		return items;
 	}
 	return [...items].sort((a, b) => {
-		let aValue: string | number = '';
-		let bValue: string | number = '';
 		switch (sortField) {
 			case TABLE_HEADERS.NAME:
-				aValue = a.name;
-				bValue = b.name;
-				break;
-			case TABLE_HEADERS.MAX_PRODUCTION:
-				aValue = calculateTrueMaxAmt(a, calculatePerkMultiplier());
-				bValue = calculateTrueMaxAmt(b, calculatePerkMultiplier());
-				break;
-			case TABLE_HEADERS.TOTAL_WORKER_COST:
-				aValue = calculateWorkerCost(a);
-				bValue = calculateWorkerCost(b);
-				break;
+				return appliedComparison(a.name, b.name, sortDirection);
 			case TABLE_HEADERS.ITEMS_PER_WORKER:
-				aValue = calculateItemsPerWorker(a);
-				bValue = calculateItemsPerWorker(b);
-				break;
+				return appliedComparison(
+					a.itemsPerWorker,
+					b.itemsPerWorker,
+					sortDirection,
+				);
 			case TABLE_HEADERS.NEEDS_PER_WORKER:
-				aValue = calculateNeedsPerWorker(a);
-				bValue = calculateNeedsPerWorker(b);
-				break;
+				return appliedComparison(
+					a.needsPerWorker,
+					b.needsPerWorker,
+					sortDirection,
+				);
 			case TABLE_HEADERS.NEED_TYPE:
-				aValue = a.needType;
-				bValue = b.needType;
-				break;
+				return appliedComparison(
+					customNeedSortVal(a),
+					customNeedSortVal(b),
+					sortDirection,
+				);
 			default:
-				exhaustiveSwitch(sortField, `Found unexpected sort field ${sortField}.`);
+				return exhaustiveSwitch(
+					sortField,
+					`Found unexpected sort field ${sortField}.`,
+				);
 		}
-		if (typeof aValue === 'string' && typeof bValue === 'string') {
-			return sortDirection === SORT_DIRECTION.ASCENDING
-				? aValue.localeCompare(bValue)
-				: bValue.localeCompare(aValue);
-		}
-		return sortDirection === SORT_DIRECTION.ASCENDING
-			? (aValue as number) - (bValue as number)
-			: (bValue as number) - (aValue as number);
-	})
+	});
 };
 // Table component to display items, items per worker, and needs per worker
 export const ItemTable = () => {
-	const [sortField, setSortField] = useState<TableHeader | undefined>(TABLE_HEADERS.NEEDS_PER_WORKER);
-	const [sortDirection, setSortDirection] = useState<SortDirection>(SORT_DIRECTION.DESCENDING);
+	const [sortField, setSortField] = useState<TableHeader | undefined>(
+		TABLE_HEADERS.NEEDS_PER_WORKER,
+	);
+	const [sortDirection, setSortDirection] = useState<SortDirection>(
+		SORT_DIRECTION.DESCENDING,
+	);
 
 	const handleSort = (field: TableHeader) => {
 		if (sortField === field) {
 			if (sortDirection === SORT_DIRECTION.DESCENDING) {
 				setSortDirection(SORT_DIRECTION.ASCENDING);
-			}
-			else {
+			} else {
 				setSortDirection(SORT_DIRECTION.NONE);
 				setSortField(undefined);
 			}
@@ -135,7 +154,9 @@ export const ItemTable = () => {
 	return (
 		<Card style={{ background: '#002200', color: '#e6e6e6' }}>
 			<CardHeader>
-				<CardTitle style={{ color: '#e6e6e6' }}>Items Production Table</CardTitle>
+				<CardTitle style={{ color: '#e6e6e6' }}>
+					Items Production Table
+				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<div className='overflow-x-auto'>
@@ -161,19 +182,15 @@ export const ItemTable = () => {
 										<ItemNameCell item={item} />
 									</td>
 									<td className='px-4 py-2'>
-										<MaxProductionCell item={item} />
-									</td>
-									<td className='px-4 py-2'>
-										<TotalWorkerCostCell item={item} />
-									</td>
-									<td className='px-4 py-2'>
-										<ItemsPerWorkerCell item={item} />
-									</td>
-									<td className='px-4 py-2'>
-										<NeedsPerWorkerCell item={item} />
-									</td>
-									<td className='px-4 py-2'>
 										<ItemNeedTypeCell item={item} />
+									</td>
+									<td className='px-4 py-2'>
+										<ItemNeedsPerWorkerCell item={item} />
+									</td>
+									<td className='px-4 py-2'>
+										<div className='py-2'>
+											{item.itemsPerWorker.toFixed(2)}
+										</div>
 									</td>
 								</tr>
 							))}
@@ -183,6 +200,6 @@ export const ItemTable = () => {
 			</CardContent>
 		</Card>
 	);
-}
+};
 
 export default ItemTable;
