@@ -4,6 +4,7 @@ export const TOOL_TYPES = {
     PICKAXE: 'Pickaxe',
     KNIFE: 'Knife',
     ADZE: 'Adze',
+    BUCKET: 'Bucket',
     STIRRING_TOOL: 'StirringTool',
     FISHING_NET: 'FishingNet',
     SEED_BAG: 'SeedBag',

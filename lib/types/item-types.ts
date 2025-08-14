@@ -38,6 +38,8 @@ export const ITEM_CLASSIFICATIONS = {
 	FISH: 'Fish',
 	CEREAL: 'Cereal',
 	RESOURCE: 'Resource',
+	INTERMEDIATE_RESOURCE: 'Intermediate Resource',
+	CONSUMABLE: 'Consumable',
 } as const;
 
 export type ItemClassification = typeof ITEM_CLASSIFICATIONS[keyof typeof ITEM_CLASSIFICATIONS];
@@ -48,13 +50,13 @@ export type Ingredient =
 
 export type Item = {
 	name: string;
-	productionLimit: number;
-	baseAmtProduced: number;
-	ingredients: Ingredient[];
+	productionLimit: number; // how many units of production can be produced per worker before any multipliers
+	baseAmtProduced: number; // how many units of this item are produced per unit of production
+	ingredients: Ingredient[]; // ingredients needed to produce this item
 	needType: NeedType;
 	needValue: number;
 	toolType: ToolType;
 	classification?: ItemClassification;
 	itemPrice: ItemPrice;
-	seasonalAvailability: seasonalAvailability;
+	seasonalAvailability: seasonalAvailability; // availability in each season (4 named boolens)
 };

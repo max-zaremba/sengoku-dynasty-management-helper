@@ -5,6 +5,8 @@ import React from 'react';
 
 export const TABLE_HEADERS = {
     NAME: 'Item Name',
+    MAX_PRODUCTION: 'Max Production',
+    TOTAL_WORKER_COST: 'Total Worker Cost',
     ITEMS_PER_WORKER: 'Items/Worker',
     NEEDS_PER_WORKER: 'Needs/Worker',
     NEED_TYPE: 'Need Type',

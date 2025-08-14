@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import {
 	calculateItemsPerWorker,
 	calculateNeedsPerWorker,
+	calculatePerkMultiplier,
+	calculateTrueMaxAmt,
+	calculateWorkerCost,
 } from '@/lib/calculations';
 import { ALL_ITEMS } from '@/lib/item-store';
 import { Ingredient, Item } from '@/lib/types/item-types';
@@ -31,6 +34,16 @@ const ItemNameCell = (props: { item: Item }) => {
 			)}
 		</div>
 	);
+};
+
+const MaxProductionCell = (props: { item: Item }) => {
+	const maxProd = calculateTrueMaxAmt(props.item, calculatePerkMultiplier());
+	return <div className='py-2'>{maxProd.toFixed(2)}</div>;
+};
+
+const TotalWorkerCostCell = (props: { item: Item }) => {
+	const workerCost = calculateWorkerCost(props.item);
+	return <div className='py-2'>{workerCost.toFixed(2)}</div>;
 };
 
 const ItemsPerWorkerCell = (props: { item: Item }) => {
@@ -63,6 +76,14 @@ const applySort = (items: Item[], sortField: TableHeader | undefined, sortDirect
 			case TABLE_HEADERS.NAME:
 				aValue = a.name;
 				bValue = b.name;
+				break;
+			case TABLE_HEADERS.MAX_PRODUCTION:
+				aValue = calculateTrueMaxAmt(a, calculatePerkMultiplier());
+				bValue = calculateTrueMaxAmt(b, calculatePerkMultiplier());
+				break;
+			case TABLE_HEADERS.TOTAL_WORKER_COST:
+				aValue = calculateWorkerCost(a);
+				bValue = calculateWorkerCost(b);
 				break;
 			case TABLE_HEADERS.ITEMS_PER_WORKER:
 				aValue = calculateItemsPerWorker(a);
@@ -138,6 +159,12 @@ export const ItemTable = () => {
 								>
 									<td className='px-4 py-2 font-medium'>
 										<ItemNameCell item={item} />
+									</td>
+									<td className='px-4 py-2'>
+										<MaxProductionCell item={item} />
+									</td>
+									<td className='px-4 py-2'>
+										<TotalWorkerCostCell item={item} />
 									</td>
 									<td className='px-4 py-2'>
 										<ItemsPerWorkerCell item={item} />
