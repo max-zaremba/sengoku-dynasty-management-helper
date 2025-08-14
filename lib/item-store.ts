@@ -71,7 +71,7 @@ const MEALS_ITEMS: Item[] = [
 	}),
 	new Item({
 		name: 'Raw Fish',
-		unitsOfProduction: 66.6, // TODO: update units of production based on worker productivity percentage
+		unitsOfProduction: 66.6, // TODO: update units of production based on workload percentage
 		baseAmtProduced: 1,
 		ingredients: [],
 		needType: NEED_TYPES.MEALS,
