@@ -53,7 +53,7 @@ const applySort = (
 	if (!sortField || !sortDirection) {
 		return items;
 	}
-	const column = tableColumns.find((col) => col.key === sortField);
+	const column = tableColumns[sortField];
 	if (!column) return items;
 	return [...items].sort((a, b) => column.sortFunc(a, b, sortDirection));
 };
@@ -82,9 +82,8 @@ export const ItemTable = (props: { devMode: boolean }) => {
 
 	const sortedItems = applySort(ALL_ITEMS, sortField, sortDirection);
 
-	const visibleHeaders = tableColumns
-		.filter((col) => props.devMode || !col.devOnly)
-		.map((col) => col.key);
+	const visibleHeaders = Object.keys(tableColumns)
+		.filter((key) => props.devMode || !("devOnly" in tableColumns[key as ColumnKey])) as ColumnKey[];
 
 	return (
 		<div className='overflow-x-auto bg-green-950 border rounded-xl py-3'>
@@ -106,44 +105,54 @@ export const ItemTable = (props: { devMode: boolean }) => {
 							key={item.name}
 							className='text-white border-b last:border-0'
 						>
-							{visibleHeaders.includes('NAME') && (
-								<td className='px-6 py-2'>
-									<ItemNameCell item={item} />
-								</td>
-							)}
-							{visibleHeaders.includes('NEED_TYPE') && (
-								<td className='px-6 py-2'>
-									<ItemNeedTypeCell item={item} />
-								</td>
-							)}
-							{visibleHeaders.includes('NEEDS_PER_WORKER') && (
-								<td className='px-6 py-2'>
-									<ItemNeedsPerWorkerCell item={item} />
-								</td>
-							)}
-							{visibleHeaders.includes('ITEMS_PER_WORKER') && (
-								<td className='px-6 py-2'>
-									<div className='py-2'>
-										{item.itemsPerWorker.toFixed(2)}
-									</div>
-								</td>
-							)}
-							{visibleHeaders.includes(
-								'TRUE_PRODUCTION_LIMIT',
-							) && (
-								<td className='px-6 py-2'>
-									<div className='py-2'>
-										{item.trueProductionLimit}
-									</div>
-								</td>
-							)}
-							{visibleHeaders.includes('WORKER_COST') && (
-								<td className='px-6 py-2'>
-									<div className='py-2'>
-										{item.workerCost.toFixed(2)}
-									</div>
-								</td>
-							)}
+							{visibleHeaders.map((key) => {
+								switch (key) {
+									case 'NAME':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<ItemNameCell item={item} />
+											</td>
+										);
+									case 'NEED_TYPE':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<ItemNeedTypeCell item={item} />
+											</td>
+										);
+									case 'NEEDS_PER_WORKER':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<ItemNeedsPerWorkerCell item={item} />
+											</td>
+										);
+									case 'ITEMS_PER_WORKER':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<div className='py-2'>
+													{item.itemsPerWorker.toFixed(2)}
+												</div>
+											</td>
+										);
+									case 'TRUE_PRODUCTION_LIMIT':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<div className='py-2'>
+													{item.trueProductionLimit}
+												</div>
+											</td>
+										);
+									case 'WORKER_COST':
+										return (
+											<td key={key} className='px-6 py-2'>
+												<div className='py-2'>
+													{item.workerCost.toFixed(2)}
+												</div>
+											</td>
+										);
+									default:
+										return null;
+								}
+							})}
 						</tr>
 					))}
 				</tbody>
