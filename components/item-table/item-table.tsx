@@ -88,9 +88,7 @@ export const ItemTable = (props: { devMode: boolean }) => {
 
 	return (
 		<div className='overflow-x-auto bg-green-950 border rounded-xl py-3'>
-			<h2
-				className='text-2xl text-center font-bold underline py-2 -mt-3 -ml-3'
-			>
+			<h2 className='text-2xl text-center font-bold underline py-2 -mt-3 -ml-3'>
 				Needs Chart
 			</h2>
 			<table className='bg-green-950 text-white min-w-full'>
@@ -118,31 +116,27 @@ export const ItemTable = (props: { devMode: boolean }) => {
 									<ItemNeedTypeCell item={item} />
 								</td>
 							)}
-							{visibleHeaders.includes(
-								'NEEDS_PER_WORKER',
-							) && (
-									<td className='px-6 py-2'>
-										<ItemNeedsPerWorkerCell item={item} />
-									</td>
-								)}
-							{visibleHeaders.includes(
-								'ITEMS_PER_WORKER',
-							) && (
-									<td className='px-6 py-2'>
-										<div className='py-2'>
-											{item.itemsPerWorker.toFixed(2)}
-										</div>
-									</td>
-								)}
+							{visibleHeaders.includes('NEEDS_PER_WORKER') && (
+								<td className='px-6 py-2'>
+									<ItemNeedsPerWorkerCell item={item} />
+								</td>
+							)}
+							{visibleHeaders.includes('ITEMS_PER_WORKER') && (
+								<td className='px-6 py-2'>
+									<div className='py-2'>
+										{item.itemsPerWorker.toFixed(2)}
+									</div>
+								</td>
+							)}
 							{visibleHeaders.includes(
 								'TRUE_PRODUCTION_LIMIT',
 							) && (
-									<td className='px-6 py-2'>
-										<div className='py-2'>
-											{item.trueProductionLimit}
-										</div>
-									</td>
-								)}
+								<td className='px-6 py-2'>
+									<div className='py-2'>
+										{item.trueProductionLimit}
+									</div>
+								</td>
+							)}
 							{visibleHeaders.includes('WORKER_COST') && (
 								<td className='px-6 py-2'>
 									<div className='py-2'>
