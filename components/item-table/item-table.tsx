@@ -125,28 +125,28 @@ export const ItemTable = (props: { devMode: boolean }) => {
 								{visibleHeaders.includes(
 									'NEEDS_PER_WORKER',
 								) && (
-										<td className='px-6 py-2'>
-											<ItemNeedsPerWorkerCell item={item} />
-										</td>
-									)}
+									<td className='px-6 py-2'>
+										<ItemNeedsPerWorkerCell item={item} />
+									</td>
+								)}
 								{visibleHeaders.includes(
 									'ITEMS_PER_WORKER',
 								) && (
-										<td className='px-6 py-2'>
-											<div className='py-2'>
-												{item.itemsPerWorker.toFixed(2)}
-											</div>
-										</td>
-									)}
+									<td className='px-6 py-2'>
+										<div className='py-2'>
+											{item.itemsPerWorker.toFixed(2)}
+										</div>
+									</td>
+								)}
 								{visibleHeaders.includes(
 									'TRUE_PRODUCTION_LIMIT',
 								) && (
-										<td className='px-6 py-2'>
-											<div className='py-2'>
-												{item.trueProductionLimit}
-											</div>
-										</td>
-									)}
+									<td className='px-6 py-2'>
+										<div className='py-2'>
+											{item.trueProductionLimit}
+										</div>
+									</td>
+								)}
 								{visibleHeaders.includes('WORKER_COST') && (
 									<td className='px-6 py-2'>
 										<div className='py-2'>

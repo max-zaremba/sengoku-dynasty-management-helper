@@ -18,12 +18,7 @@ const ItemTableColumn = (
 		column: Column;
 	},
 ) => {
-	// Visibility is now controlled by visibleHeaders prop
-	if (
-		props.visibleHeaders &&
-		!props.visibleHeaders.includes(props.column.key)
-	)
-		return null;
+	if (!props.visibleHeaders?.includes(props.column.key)) return null;
 	return (
 		<Button
 			variant='ghost'
@@ -31,21 +26,22 @@ const ItemTableColumn = (
 			className='font-semibold p-0'
 		>
 			{props.column.name}{' '}
-			<SortIcon columnKey={props.column.key} sortField={props.sortField} sortDirection={props.sortDirection} />
+			<SortIcon
+				columnKey={props.column.key}
+				sortField={props.sortField}
+				sortDirection={props.sortDirection}
+			/>
 		</Button>
 	);
 };
 
 export const ItemTableHeaderRow = (props: ItemTableHeaderRowProps) => (
 	<tr className='border-b bg-muted/50'>
-		{tableColumns.map((column) =>
-			!props.visibleHeaders ||
-				props.visibleHeaders.includes(column.key) ? (
-				<th key={column.key} className='py-1 text-center'>
-					<ItemTableColumn {...props} column={column} />
-				</th>
-			) : null,
-		)}
+		{tableColumns.map((column) => (
+			<th key={column.key} className='py-1 text-center'>
+				<ItemTableColumn {...props} column={column} />
+			</th>
+		))}
 	</tr>
 );
 
