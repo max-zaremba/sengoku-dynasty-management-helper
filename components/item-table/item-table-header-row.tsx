@@ -41,7 +41,11 @@ export const ItemTableHeaderRow = (props: ItemTableHeaderRowProps) => (
 			if (!props.visibleHeaders?.includes(key)) return null;
 			return (
 				<th key={key} className='py-1 text-center'>
-					<ItemTableColumn {...props} column={tableColumns[key]} columnKey={key} />
+					<ItemTableColumn
+						{...props}
+						column={tableColumns[key]}
+						columnKey={key}
+					/>
 				</th>
 			);
 		})}

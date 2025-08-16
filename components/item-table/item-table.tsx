@@ -82,8 +82,10 @@ export const ItemTable = (props: { devMode: boolean }) => {
 
 	const sortedItems = applySort(ALL_ITEMS, sortField, sortDirection);
 
-	const visibleHeaders = Object.keys(tableColumns)
-		.filter((key) => props.devMode || !("devOnly" in tableColumns[key as ColumnKey])) as ColumnKey[];
+	const visibleHeaders = Object.keys(tableColumns).filter(
+		(key) =>
+			props.devMode || !('devOnly' in tableColumns[key as ColumnKey]),
+	) as ColumnKey[];
 
 	return (
 		<div className='overflow-x-auto bg-green-950 border rounded-xl py-3'>
@@ -122,14 +124,18 @@ export const ItemTable = (props: { devMode: boolean }) => {
 									case 'NEEDS_PER_WORKER':
 										return (
 											<td key={key} className='px-6 py-2'>
-												<ItemNeedsPerWorkerCell item={item} />
+												<ItemNeedsPerWorkerCell
+													item={item}
+												/>
 											</td>
 										);
 									case 'ITEMS_PER_WORKER':
 										return (
 											<td key={key} className='px-6 py-2'>
 												<div className='py-2'>
-													{item.itemsPerWorker.toFixed(2)}
+													{item.itemsPerWorker.toFixed(
+														2,
+													)}
 												</div>
 											</td>
 										);
