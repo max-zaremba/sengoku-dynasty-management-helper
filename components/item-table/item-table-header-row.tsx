@@ -9,7 +9,7 @@ import { SortIcon } from './sort-icons';
 interface ItemTableHeaderRowProps {
 	sortField: ColumnKey | undefined;
 	sortDirection: SortDirection;
-	onSortClick: (field: ColumnKey) => void;
+	sortClickHandler: (field: ColumnKey) => void;
 	visibleHeaders?: string[];
 }
 
@@ -22,7 +22,7 @@ const ItemTableColumn = (
 	return (
 		<Button
 			variant='ghost'
-			onClick={() => props.onSortClick(props.column.key)}
+			onClick={() => props.sortClickHandler(props.column.key)}
 			className='font-semibold p-0'
 		>
 			{props.column.name}{' '}

@@ -66,7 +66,7 @@ export const ItemTable = (props: { devMode: boolean }) => {
 		SORT_DIRECTION.DESCENDING,
 	);
 
-	const onSortClick = (field: ColumnKey) => {
+	const sortClickHandler = (field: ColumnKey) => {
 		if (sortField === field) {
 			if (sortDirection === SORT_DIRECTION.DESCENDING) {
 				setSortDirection(SORT_DIRECTION.ASCENDING);
@@ -102,7 +102,7 @@ export const ItemTable = (props: { devMode: boolean }) => {
 						<ItemTableHeaderRow
 							sortField={sortField}
 							sortDirection={sortDirection}
-							onSortClick={onSortClick}
+							sortClickHandler={sortClickHandler}
 							visibleHeaders={visibleHeaders}
 						/>
 					</thead>
