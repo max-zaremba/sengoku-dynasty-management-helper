@@ -66,11 +66,12 @@ export class Item {
 	}
 
 	get trueProductionLimit(): number {
-		return Math.floor(
-			this.unitsOfProduction *
-				this.baseAmtProduced *
-				currentPerkMultiplier *
-				currentToolMultipliers[this.toolType],
+		return (
+			Math.floor(
+				this.unitsOfProduction *
+					currentPerkMultiplier *
+					currentToolMultipliers[this.toolType],
+			) * this.baseAmtProduced
 		);
 	}
 
