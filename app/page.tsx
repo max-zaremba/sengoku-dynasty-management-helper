@@ -11,7 +11,7 @@ const SengokuDynastyManager = () => {
 	return (
 		<div className='text-white min-h-screen'>
 			<header className='bg-green-950 p-4 text-center'>
-				<h1 className='text-3xl font-bold'>
+				<h1 className='text-4xl font-bold'>
 					Sengoku Dynasty Management Helper
 				</h1>
 			</header>

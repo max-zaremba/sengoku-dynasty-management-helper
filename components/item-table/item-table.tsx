@@ -83,82 +83,77 @@ export const ItemTable = (props: { devMode: boolean }) => {
 	const sortedItems = applySort(ALL_ITEMS, sortField, sortDirection);
 
 	const visibleHeaders = tableColumns
-		.filter((col) => !col.devOnly || props.devMode)
+		.filter((col) => props.devMode || !col.devOnly)
 		.map((col) => col.key);
 
 	return (
-		<div className='bg-green-950 border rounded-xl py-3'>
-			<div className='overflow-x-auto'>
-				<table className='bg-green-950 text-white min-w-full divide-y divide-border'>
-					<thead className='text-white'>
-						<tr>
-							<th
-								className='text-lg text-center font-semibold p-2'
-								colSpan={visibleHeaders.length}
-							>
-								Needs Charts
-							</th>
-						</tr>
-						<ItemTableHeaderRow
-							sortField={sortField}
-							sortDirection={sortDirection}
-							sortClickHandler={sortClickHandler}
-							visibleHeaders={visibleHeaders}
-						/>
-					</thead>
-					<tbody>
-						{sortedItems.map((item) => (
-							<tr
-								key={item.name}
-								className='text-white border-b last:border-0'
-							>
-								{visibleHeaders.includes('NAME') && (
-									<td className='px-6 py-2 font-medium'>
-										<ItemNameCell item={item} />
-									</td>
-								)}
-								{visibleHeaders.includes('NEED_TYPE') && (
-									<td className='px-6 py-2'>
-										<ItemNeedTypeCell item={item} />
-									</td>
-								)}
-								{visibleHeaders.includes(
-									'NEEDS_PER_WORKER',
-								) && (
+		<div className='overflow-x-auto bg-green-950 border rounded-xl py-3'>
+			<h2
+				className='text-2xl text-center font-bold underline py-2 -mt-3 -ml-3'
+			>
+				Needs Chart
+			</h2>
+			<table className='bg-green-950 text-white min-w-full'>
+				<thead className='text-white'>
+					<ItemTableHeaderRow
+						sortField={sortField}
+						sortDirection={sortDirection}
+						sortClickHandler={sortClickHandler}
+						visibleHeaders={visibleHeaders}
+					/>
+				</thead>
+				<tbody>
+					{sortedItems.map((item) => (
+						<tr
+							key={item.name}
+							className='text-white border-b last:border-0'
+						>
+							{visibleHeaders.includes('NAME') && (
+								<td className='px-6 py-2'>
+									<ItemNameCell item={item} />
+								</td>
+							)}
+							{visibleHeaders.includes('NEED_TYPE') && (
+								<td className='px-6 py-2'>
+									<ItemNeedTypeCell item={item} />
+								</td>
+							)}
+							{visibleHeaders.includes(
+								'NEEDS_PER_WORKER',
+							) && (
 									<td className='px-6 py-2'>
 										<ItemNeedsPerWorkerCell item={item} />
 									</td>
 								)}
-								{visibleHeaders.includes(
-									'ITEMS_PER_WORKER',
-								) && (
+							{visibleHeaders.includes(
+								'ITEMS_PER_WORKER',
+							) && (
 									<td className='px-6 py-2'>
 										<div className='py-2'>
 											{item.itemsPerWorker.toFixed(2)}
 										</div>
 									</td>
 								)}
-								{visibleHeaders.includes(
-									'TRUE_PRODUCTION_LIMIT',
-								) && (
+							{visibleHeaders.includes(
+								'TRUE_PRODUCTION_LIMIT',
+							) && (
 									<td className='px-6 py-2'>
 										<div className='py-2'>
 											{item.trueProductionLimit}
 										</div>
 									</td>
 								)}
-								{visibleHeaders.includes('WORKER_COST') && (
-									<td className='px-6 py-2'>
-										<div className='py-2'>
-											{item.workerCost.toFixed(2)}
-										</div>
-									</td>
-								)}
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
+							{visibleHeaders.includes('WORKER_COST') && (
+								<td className='px-6 py-2'>
+									<div className='py-2'>
+										{item.workerCost.toFixed(2)}
+									</div>
+								</td>
+							)}
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 };

@@ -10,7 +10,7 @@ interface ItemTableHeaderRowProps {
 	sortField: ColumnKey | undefined;
 	sortDirection: SortDirection;
 	sortClickHandler: (field: ColumnKey) => void;
-	visibleHeaders?: string[];
+	visibleHeaders?: ColumnKey[];
 }
 
 const ItemTableColumn = (
@@ -18,12 +18,11 @@ const ItemTableColumn = (
 		column: Column;
 	},
 ) => {
-	if (!props.visibleHeaders?.includes(props.column.key)) return null;
 	return (
 		<Button
 			variant='ghost'
 			onClick={() => props.sortClickHandler(props.column.key)}
-			className='font-semibold p-0'
+			className='text-lg font-semibold p-0'
 		>
 			{props.column.name}{' '}
 			<SortIcon
@@ -37,11 +36,15 @@ const ItemTableColumn = (
 
 export const ItemTableHeaderRow = (props: ItemTableHeaderRowProps) => (
 	<tr className='border-b bg-muted/50'>
-		{tableColumns.map((column) => (
-			<th key={column.key} className='py-1 text-center'>
-				<ItemTableColumn {...props} column={column} />
-			</th>
-		))}
+		{tableColumns.map((column) => {
+			if (!props.visibleHeaders?.includes(column.key)) return null;
+
+			return (
+				<th key={column.key} className='py-1 text-center'>
+					<ItemTableColumn {...props} column={column} />
+				</th>
+			);
+		})}
 	</tr>
 );
 
