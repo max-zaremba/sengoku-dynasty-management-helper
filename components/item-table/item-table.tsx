@@ -57,8 +57,7 @@ const applySort = (
 	if (!column) return items;
 	return [...items].sort((a, b) => column.sortFunc(a, b, sortDirection));
 };
-// Table component to display items, items per worker, and needs per worker
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export const ItemTable = (props: { devMode: boolean }) => {
 	const [sortField, setSortField] = useState<ColumnKey | undefined>(
 		'NEEDS_PER_WORKER',
@@ -82,7 +81,7 @@ export const ItemTable = (props: { devMode: boolean }) => {
 	};
 
 	const sortedItems = applySort(ALL_ITEMS, sortField, sortDirection);
-	// Only show devOnly columns if devMode is true
+
 	const visibleHeaders = tableColumns
 		.filter((col) => !col.devOnly || props.devMode)
 		.map((col) => col.key);
@@ -126,28 +125,28 @@ export const ItemTable = (props: { devMode: boolean }) => {
 								{visibleHeaders.includes(
 									'NEEDS_PER_WORKER',
 								) && (
-									<td className='px-6 py-2'>
-										<ItemNeedsPerWorkerCell item={item} />
-									</td>
-								)}
+										<td className='px-6 py-2'>
+											<ItemNeedsPerWorkerCell item={item} />
+										</td>
+									)}
 								{visibleHeaders.includes(
 									'ITEMS_PER_WORKER',
 								) && (
-									<td className='px-6 py-2'>
-										<div className='py-2'>
-											{item.itemsPerWorker.toFixed(2)}
-										</div>
-									</td>
-								)}
+										<td className='px-6 py-2'>
+											<div className='py-2'>
+												{item.itemsPerWorker.toFixed(2)}
+											</div>
+										</td>
+									)}
 								{visibleHeaders.includes(
 									'TRUE_PRODUCTION_LIMIT',
 								) && (
-									<td className='px-6 py-2'>
-										<div className='py-2'>
-											{item.trueProductionLimit}
-										</div>
-									</td>
-								)}
+										<td className='px-6 py-2'>
+											<div className='py-2'>
+												{item.trueProductionLimit}
+											</div>
+										</td>
+									)}
 								{visibleHeaders.includes('WORKER_COST') && (
 									<td className='px-6 py-2'>
 										<div className='py-2'>
